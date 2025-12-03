@@ -1,0 +1,81 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Admin.master.cs" 
+    Inherits="interviewqunestion.Admin.Admin" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>IQ Portal - Admin</title>
+    <meta charset="utf-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <form id="form1" runat="server">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+
+                <a class="navbar-brand" href="~/Admin/AdminHome.aspx">IQ Admin</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+
+                    <!-- Main Admin navigation links -->
+                    <ul class="navbar-nav me-auto">
+
+                        <li class="nav-item">
+                            <asp:HyperLink runat="server" NavigateUrl="~/Admin/ManageCategories.aspx"
+                                CssClass="nav-link" Text="Manage Categories" />
+                        </li>
+
+                        <li class="nav-item">
+                            <asp:HyperLink runat="server" NavigateUrl="~/Admin/ManageCompanies.aspx"
+                                CssClass="nav-link" Text="Manage Companies" />
+                        </li>
+
+                        <li class="nav-item">
+                            <asp:HyperLink runat="server" NavigateUrl="~/Admin/ManageQuestions.aspx"
+                                CssClass="nav-link" Text="Manage Questions" />
+                        </li>
+
+                        <li class="nav-item">
+                            <asp:HyperLink runat="server" NavigateUrl="~/Admin/ManageTests.aspx"
+                                CssClass="nav-link" Text="Manage Tests" />
+                        </li>
+
+                        <li class="nav-item">
+                            <asp:HyperLink runat="server" NavigateUrl="~/Admin/AssignQuestions.aspx"
+                                CssClass="nav-link" Text="Assign Questions" />
+                        </li>
+
+                        <li class="nav-item">
+                            <asp:HyperLink runat="server" NavigateUrl="~/Admin/ViewTestResults.aspx"
+                                CssClass="nav-link" Text="View Results" />
+                        </li>
+
+                    </ul>
+
+                    <!-- Logged-in User + Logout -->
+                    <div class="d-flex">
+                        <asp:Label ID="lblUser" runat="server" CssClass="text-white me-3"></asp:Label>
+                        <asp:LinkButton ID="btnLogout" runat="server"
+                            CssClass="btn btn-danger btn-sm" Text="Logout"
+                            OnClick="btnLogout_Click" />
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="container my-4">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    </form>
+</body>
+</html>
