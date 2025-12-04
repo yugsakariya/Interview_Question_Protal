@@ -1,53 +1,57 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
-public static class DBHelper
+namespace DataLayer
 {
-    private static readonly string _conStr =
-        ConfigurationManager.ConnectionStrings["IQPortalConn"].ConnectionString;
-
-    public static DataTable ExecuteDataTable(string query, SqlParameter[] parameters = null)
+    public class DBHelper
     {
-        using (SqlConnection con = new SqlConnection(_conStr))
-        using (SqlCommand cmd = new SqlCommand(query, con))
-        {
-            if (parameters != null)
-                cmd.Parameters.AddRange(parameters);
+        SqlConnection con;
+        static string conStr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
 
-            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+        public void openConnection()
+        {
+            con = new SqlConnection(conStr);
+            con.Open();
+        }
+        public void closeConnection()
+        {
+            con.Close();
+        }
+
+        public void disposeConnection()
+        {
+            con.Dispose();
+        }
+
+        public SqlDataAdapter ExeSP(string sp_name, Dictionary<string, dynamic> parametres)
+        {
+            try
             {
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                return dt;
+                openConnection();
+                SqlCommand cmd = new SqlCommand(sp_name, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                if (parametres != null)
+                {
+                    foreach (var parametre in parametres)
+                    {
+                        cmd.Parameters.AddWithValue(parametre.Key, parametre.Value);
+                    }
+                    }
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                return da;
             }
-        }
-    }
-
-    public static int ExecuteNonQuery(string query, SqlParameter[] parameters = null)
-    {
-        using (SqlConnection con = new SqlConnection(_conStr))
-        using (SqlCommand cmd = new SqlCommand(query, con))
-        {
-            if (parameters != null)
-                cmd.Parameters.AddRange(parameters);
-
-            con.Open();
-            return cmd.ExecuteNonQuery();
-        }
-    }
-
-    public static object ExecuteScalar(string query, SqlParameter[] parameters = null)
-    {
-        using (SqlConnection con = new SqlConnection(_conStr))
-        using (SqlCommand cmd = new SqlCommand(query, con))
-        {
-            if (parameters != null)
-                cmd.Parameters.AddRange(parameters);
-
-            con.Open();
-            return cmd.ExecuteScalar();
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
+                con.Dispose();
+            }
         }
     }
 }
